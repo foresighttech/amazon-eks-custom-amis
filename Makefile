@@ -1,8 +1,8 @@
 
-PACKER_VARIABLES := binary_bucket_name binary_bucket_region eks_version eks_build_date cni_plugin_version root_volume_size data_volume_size hardening_flag http_proxy https_proxy no_proxy
-VPC_ID := vpc-0e8cf1ce122b1b059
-SUBNET_ID := subnet-0eddf1d7d0f9f9772
-AWS_REGION := us-east-2
+PACKER_VARIABLES := binary_bucket_name binary_bucket_region eks_version eks_build_date cni_plugin_version root_volume_size data_volume_size hardening_flag http_proxy https_proxy no_proxy kms_key
+VPC_ID := vpc-0a70337fd754da074
+SUBNET_ID := subnet-0643920c7034906c2
+AWS_REGION := us-east-1
 PACKER_FILE := 
 
 EKS_BUILD_DATE := 2020-11-02
@@ -17,6 +17,10 @@ build:
 		--var 'aws_region=$(AWS_REGION)' \
 		--var 'vpc_id=$(VPC_ID)' \
 		--var 'subnet_id=$(SUBNET_ID)' \
+		--var 'eks_version=1.21' \
+		--var 'hardening_flag=true' \
+		--var 'cni_plugin_version=v1.9.1' \
+		--var 'kms_key=927fdd00-1d0d-44e1-89bd-b0a7b9094a20' \
 		$(foreach packerVar,$(PACKER_VARIABLES), $(if $($(packerVar)),--var $(packerVar)='$($(packerVar))',)) \
 		$(PACKER_FILE)
 
@@ -34,8 +38,8 @@ build-al2-1.17:
 build-al2-1.18:
 	$(MAKE) build PACKER_FILE=amazon-eks-node-al2.json eks_version=1.18
 
-build-al2-1.19:
-	$(MAKE) build PACKER_FILE=amazon-eks-node-al2.json eks_version=1.19
+build-al2-1.21:
+	$(MAKE) build PACKER_FILE=amazon-eks-node-al2.json eks_version=1.21
 
 # Ubuntu 18.04
 #-----------------------------------------------------
