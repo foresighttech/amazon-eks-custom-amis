@@ -12,7 +12,7 @@
 #   0 finishes when the cloud-init process is complete
 ################################################################
 wait_for_cloudinit() {
-    cloud-init status --wait
+    cloud-init status --wait --long
 }
 
 get_arch() {
